@@ -51,6 +51,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   terraform:
@@ -67,6 +68,19 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
+
+    # Authenticate to Google Cloud using the "google-github-actions/auth" action with Workload Identity Federation. The "project_id" and "workload_identity_provider" inputs are required. 
+    - name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v3'
+      with:
+        project_id: 'project-3c96a4da-49d2-492c-b08'
+        workload_identity_provider: 'projects/900218598099/locations/global/workloadIdentityPools/mert-pool/providers/github-mert' 
+        service_account: 'githubaction@project-3c96a4da-49d2-492c-b08.iam.gserviceaccount.com' 
+
+    - name: 'test authentication'
+      run: |-
+        gcloud auth login --brief --cred-file=${{ steps.auth.outputs.credential_file_path }}
+        gcloud services list --project=project-3c96a4da-49d2-492c-b08
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
