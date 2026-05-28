@@ -82,7 +82,7 @@ jobs:
     #     gcloud auth login --brief --cred-file=${{ steps.auth.outputs.credential_file_path }}
     #     gcloud services list --project=project-3c96a4da-49d2-492c-b08
 
-    Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
